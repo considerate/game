@@ -1907,7 +1907,8 @@ Elm.Main.make = function (_elm) {
          switch (_v8.ctor)
          {case "_Tuple2":
             return function () {
-                 var src = "cha1.png";
+                 var pleft_src = "res/pleft.png";
+                 var pright_src = "res/pright.png";
                  var $ = A2(fitIn,
                  {ctor: "_Tuple2"
                  ,_0: 900
@@ -1927,16 +1928,22 @@ Elm.Main.make = function (_elm) {
                  _L.fromArray([$Graphics$Collage.toForm(A3($Graphics$Element.image,
                               $Basics.round(900 * scaling),
                               $Basics.round(500 * scaling),
-                              "bg_s4.png"))
-                              ,$Graphics$Collage.move({ctor: "_Tuple2"
-                                                      ,_0: player.x
-                                                      ,_1: player.y - 80})($Graphics$Collage.toForm(A3($Graphics$Element.image,
+                              "res/bg_s4.png"))
+                              ,_U.eq(player.dir,
+                              "right") ? $Graphics$Collage.move({ctor: "_Tuple2"
+                                                                ,_0: player.x
+                                                                ,_1: player.y - 80})($Graphics$Collage.toForm(A3($Graphics$Element.image,
                               $Basics.round(52 * scaling),
                               $Basics.round(82 * scaling),
-                              src)))]))));
+                              pright_src))) : $Graphics$Collage.move({ctor: "_Tuple2"
+                                                                     ,_0: player.x
+                                                                     ,_1: player.y - 80})($Graphics$Collage.toForm(A3($Graphics$Element.image,
+                              $Basics.round(52 * scaling),
+                              $Basics.round(82 * scaling),
+                              pleft_src)))]))));
               }();}
          _U.badCase($moduleName,
-         "between lines 41 and 47");
+         "between lines 41 and 51");
       }();
    });
    var physics = F2(function (t,

@@ -39,11 +39,15 @@ fitIn (w,h) (screenW,screenH) =
 -- DISPLAY
 render (w',h') player =
     let (w,h,scaling) = fitIn (900,500) (toFloat w',toFloat h')
-        src = "cha1.png"
+        pright_src = "res/pright.png"
+        pleft_src = "res/pleft.png"
     in Debug.watch (toString (scaling)) <| container w' h' middle <|
         collage (round w) (round h) [
-            toForm (image (round (900*scaling)) (round (500*scaling)) "bg_s4.png"),
-            toForm (image (round (52*scaling)) (round (82*scaling)) src) |> move (player.x, player.y-80)
+            toForm (image (round (900*scaling)) (round (500*scaling)) "res/bg_s4.png"),
+
+            -- This section displays the image of the player depending on what way he is turning. 
+            if player.dir == "right" then toForm (image (round (52*scaling)) (round (82*scaling)) pright_src) |> move (player.x, player.y-80) else
+              toForm (image (round (52*scaling)) (round (82*scaling)) pleft_src) |> move (player.x, player.y-80)
         ]
 
 input = let delta = Signal.map (\t -> t/20) (fps 25)
