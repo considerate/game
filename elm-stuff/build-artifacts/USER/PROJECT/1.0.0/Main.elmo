@@ -1,0 +1,182 @@
+Elm.Main = Elm.Main || {};
+Elm.Main.make = function (_elm) {
+   "use strict";
+   _elm.Main = _elm.Main || {};
+   if (_elm.Main.values)
+   return _elm.Main.values;
+   var _op = {},
+   _N = Elm.Native,
+   _U = _N.Utils.make(_elm),
+   _L = _N.List.make(_elm),
+   _P = _N.Ports.make(_elm),
+   $moduleName = "Main",
+   $Basics = Elm.Basics.make(_elm),
+   $Debug = Elm.Debug.make(_elm),
+   $Graphics$Collage = Elm.Graphics.Collage.make(_elm),
+   $Graphics$Element = Elm.Graphics.Element.make(_elm),
+   $Keyboard = Elm.Keyboard.make(_elm),
+   $Signal = Elm.Signal.make(_elm),
+   $Time = Elm.Time.make(_elm),
+   $Window = Elm.Window.make(_elm);
+   var input = function () {
+      var delta = A2($Signal.map,
+      function (t) {
+         return t / 20;
+      },
+      $Time.fps(25));
+      return A2($Signal.sampleOn,
+      delta,
+      A3($Signal.map2,
+      F2(function (v0,v1) {
+         return {ctor: "_Tuple2"
+                ,_0: v0
+                ,_1: v1};
+      }),
+      delta,
+      $Keyboard.arrows));
+   }();
+   var fitIn = F2(function (_v0,
+   _v1) {
+      return function () {
+         switch (_v1.ctor)
+         {case "_Tuple2":
+            return function () {
+                 switch (_v0.ctor)
+                 {case "_Tuple2":
+                    return function () {
+                         var screenRatio = _v1._0 / _v1._1;
+                         var ratio = _v0._0 / _v0._1;
+                         return _U.cmp(screenRatio,
+                         ratio) > 0 ? {ctor: "_Tuple3"
+                                      ,_0: _v0._0 * _v1._1 / _v0._1
+                                      ,_1: _v1._1
+                                      ,_2: _v1._1 / _v0._1} : {ctor: "_Tuple3"
+                                                              ,_0: _v1._0
+                                                              ,_1: _v0._1 * _v1._0 / _v0._0
+                                                              ,_2: _v1._0 / _v0._0};
+                      }();}
+                 _U.badCase($moduleName,
+                 "between lines 33 and 37");
+              }();}
+         _U.badCase($moduleName,
+         "between lines 33 and 37");
+      }();
+   });
+   var render = F2(function (_v8,
+   player) {
+      return function () {
+         switch (_v8.ctor)
+         {case "_Tuple2":
+            return function () {
+                 var src = "cha1.png";
+                 var $ = A2(fitIn,
+                 {ctor: "_Tuple2"
+                 ,_0: 900
+                 ,_1: 500},
+                 {ctor: "_Tuple2"
+                 ,_0: $Basics.toFloat(_v8._0)
+                 ,_1: $Basics.toFloat(_v8._1)}),
+                 w = $._0,
+                 h = $._1,
+                 scaling = $._2;
+                 return $Debug.watch($Basics.toString(scaling))(A3($Graphics$Element.container,
+                 _v8._0,
+                 _v8._1,
+                 $Graphics$Element.middle)(A3($Graphics$Collage.collage,
+                 $Basics.round(w),
+                 $Basics.round(h),
+                 _L.fromArray([$Graphics$Collage.toForm(A3($Graphics$Element.image,
+                              $Basics.round(900 * scaling),
+                              $Basics.round(500 * scaling),
+                              "bg_s4.png"))
+                              ,$Graphics$Collage.move({ctor: "_Tuple2"
+                                                      ,_0: player.x
+                                                      ,_1: player.y - 80})($Graphics$Collage.toForm(A3($Graphics$Element.image,
+                              $Basics.round(52 * scaling),
+                              $Basics.round(82 * scaling),
+                              src)))]))));
+              }();}
+         _U.badCase($moduleName,
+         "between lines 41 and 47");
+      }();
+   });
+   var physics = F2(function (t,
+   m) {
+      return _U.replace([["x"
+                         ,m.x + t * m.vx]
+                        ,["y"
+                         ,A2($Basics.max,
+                         0,
+                         m.y + t * m.vy)]],
+      m);
+   });
+   var gravity = F2(function (t,
+   m) {
+      return _U.cmp(m.y,
+      0) > 0 ? _U.replace([["vy"
+                           ,m.vy - t / 4]],
+      m) : m;
+   });
+   var moveSpeed = 8;
+   var walk = F2(function (_v12,
+   m) {
+      return function () {
+         return _U.replace([["vx"
+                            ,moveSpeed * $Basics.toFloat(_v12.x)]
+                           ,["dir"
+                            ,_U.cmp(_v12.x,
+                            0) < 0 ? "left" : _U.cmp(_v12.x,
+                            0) > 0 ? "right" : m.dir]],
+         m);
+      }();
+   });
+   var jumpSpeed = 8;
+   var jump = F2(function (_v14,
+   m) {
+      return function () {
+         return _U.cmp(_v14.y,
+         0) > 0 && _U.eq(m.y,
+         0) ? _U.replace([["vy"
+                          ,jumpSpeed]],
+         m) : m;
+      }();
+   });
+   var step = function (_v16) {
+      return function () {
+         switch (_v16.ctor)
+         {case "_Tuple2":
+            return function ($) {
+                 return physics(_v16._0)(walk(_v16._1)(gravity(_v16._0)(jump(_v16._1)($))));
+              };}
+         _U.badCase($moduleName,
+         "on line 29, column 5 to 55");
+      }();
+   };
+   var player = {_: {}
+                ,dir: "right"
+                ,vx: 0
+                ,vy: 0
+                ,x: 0
+                ,y: 0};
+   var main = A3($Signal.map2,
+   render,
+   $Window.dimensions,
+   A3($Signal.foldp,
+   step,
+   player,
+   input));
+   _elm.Main.values = {_op: _op
+                      ,player: player
+                      ,jumpSpeed: jumpSpeed
+                      ,moveSpeed: moveSpeed
+                      ,jump: jump
+                      ,gravity: gravity
+                      ,physics: physics
+                      ,walk: walk
+                      ,step: step
+                      ,fitIn: fitIn
+                      ,render: render
+                      ,input: input
+                      ,main: main};
+   return _elm.Main.values;
+};
