@@ -11,19 +11,29 @@ Elm.Main.make = function (_elm) {
    _P = _N.Ports.make(_elm),
    $moduleName = "Main",
    $Basics = Elm.Basics.make(_elm),
-   $Debug = Elm.Debug.make(_elm),
-   $Graphics$Collage = Elm.Graphics.Collage.make(_elm),
-   $Graphics$Element = Elm.Graphics.Element.make(_elm),
    $Keyboard = Elm.Keyboard.make(_elm),
    $Signal = Elm.Signal.make(_elm),
-   $Time = Elm.Time.make(_elm),
-   $Window = Elm.Window.make(_elm);
+   $Text = Elm.Text.make(_elm),
+   $Time = Elm.Time.make(_elm);
+   var render = function (_v0) {
+      return function () {
+         switch (_v0.ctor)
+         {case "::": switch (_v0._1.ctor)
+              {case "::":
+                 switch (_v0._1._1.ctor)
+                   {case "[]":
+                      return $Text.asText({ctor: "_Tuple3"
+                                          ,_0: _v0._1._0.a
+                                          ,_1: _v0._1._0.v
+                                          ,_2: _v0._1._0.pos});}
+                   break;}
+              break;}
+         _U.badCase($moduleName,
+         "on line 43, column 5 to 31");
+      }();
+   };
    var input = function () {
-      var delta = A2($Signal.map,
-      function (t) {
-         return t / 20;
-      },
-      $Time.fps(25));
+      var delta = $Time.fps(10);
       return A2($Signal.sampleOn,
       delta,
       A3($Signal.map2,
@@ -35,155 +45,176 @@ Elm.Main.make = function (_elm) {
       delta,
       $Keyboard.arrows));
    }();
-   var fitIn = F2(function (_v0,
-   _v1) {
+   var scale = F2(function (k,
+   _v6) {
       return function () {
-         switch (_v1.ctor)
+         switch (_v6.ctor)
+         {case "_Tuple2":
+            return {ctor: "_Tuple2"
+                   ,_0: k * _v6._0
+                   ,_1: k * _v6._1};}
+         _U.badCase($moduleName,
+         "on line 14, column 18 to 26");
+      }();
+   });
+   var dot = F2(function (_v10,
+   _v11) {
+      return function () {
+         switch (_v11.ctor)
          {case "_Tuple2":
             return function () {
-                 switch (_v0.ctor)
+                 switch (_v10.ctor)
                  {case "_Tuple2":
-                    return function () {
-                         var screenRatio = _v1._0 / _v1._1;
-                         var ratio = _v0._0 / _v0._1;
-                         return _U.cmp(screenRatio,
-                         ratio) > 0 ? {ctor: "_Tuple3"
-                                      ,_0: _v0._0 * _v1._1 / _v0._1
-                                      ,_1: _v1._1
-                                      ,_2: _v1._1 / _v0._1} : {ctor: "_Tuple3"
-                                                              ,_0: _v1._0
-                                                              ,_1: _v0._1 * _v1._0 / _v0._0
-                                                              ,_2: _v1._0 / _v0._0};
-                      }();}
+                    return _v10._0 * _v11._0 + _v10._1 * _v11._1;}
                  _U.badCase($moduleName,
-                 "between lines 33 and 37");
+                 "on line 13, column 23 to 36");
               }();}
          _U.badCase($moduleName,
-         "between lines 33 and 37");
+         "on line 13, column 23 to 36");
       }();
    });
-   var render = F2(function (_v8,
-   player) {
+   var len = function (v) {
+      return $Basics.sqrt(A2(dot,
+      v,
+      v));
+   };
+   var norm = function (v) {
+      return A2(scale,
+      1 / len(v),
+      v);
+   };
+   var add = F2(function (_v18,
+   _v19) {
       return function () {
-         switch (_v8.ctor)
+         switch (_v19.ctor)
          {case "_Tuple2":
             return function () {
-                 var pleft_src = "res/pleft.png";
-                 var pright_src = "res/pright.png";
-                 var $ = A2(fitIn,
-                 {ctor: "_Tuple2"
-                 ,_0: 900
-                 ,_1: 500},
-                 {ctor: "_Tuple2"
-                 ,_0: $Basics.toFloat(_v8._0)
-                 ,_1: $Basics.toFloat(_v8._1)}),
-                 w = $._0,
-                 h = $._1,
-                 scaling = $._2;
-                 return $Debug.watch($Basics.toString(scaling))(A3($Graphics$Element.container,
-                 _v8._0,
-                 _v8._1,
-                 $Graphics$Element.middle)(A3($Graphics$Collage.collage,
-                 $Basics.round(w),
-                 $Basics.round(h),
-                 _L.fromArray([$Graphics$Collage.toForm(A3($Graphics$Element.image,
-                              $Basics.round(900 * scaling),
-                              $Basics.round(500 * scaling),
-                              "res/bg_s4.png"))
-                              ,_U.eq(player.dir,
-                              "right") ? $Graphics$Collage.move({ctor: "_Tuple2"
-                                                                ,_0: player.x
-                                                                ,_1: player.y - 80})($Graphics$Collage.toForm(A3($Graphics$Element.image,
-                              $Basics.round(52 * scaling),
-                              $Basics.round(82 * scaling),
-                              pright_src))) : $Graphics$Collage.move({ctor: "_Tuple2"
-                                                                     ,_0: player.x
-                                                                     ,_1: player.y - 80})($Graphics$Collage.toForm(A3($Graphics$Element.image,
-                              $Basics.round(52 * scaling),
-                              $Basics.round(82 * scaling),
-                              pleft_src)))]))));
+                 switch (_v18.ctor)
+                 {case "_Tuple2":
+                    return {ctor: "_Tuple2"
+                           ,_0: _v18._0 + _v19._0
+                           ,_1: _v18._1 + _v19._1};}
+                 _U.badCase($moduleName,
+                 "on line 12, column 24 to 36");
               }();}
          _U.badCase($moduleName,
-         "between lines 41 and 51");
+         "on line 12, column 24 to 36");
       }();
    });
-   var physics = F2(function (t,
-   m) {
-      return _U.replace([["x"
-                         ,m.x + t * m.vx]
-                        ,["y"
-                         ,A2($Basics.max,
-                         0,
-                         m.y + t * m.vy)]],
-      m);
-   });
-   var gravity = F2(function (t,
-   m) {
-      return _U.cmp(m.y,
-      0) > 0 ? _U.replace([["vy"
-                           ,m.vy - t / 4]],
-      m) : m;
-   });
-   var moveSpeed = 8;
-   var walk = F2(function (_v12,
-   m) {
+   var sub = F2(function (_v26,
+   _v27) {
       return function () {
-         return _U.replace([["vx"
-                            ,moveSpeed * $Basics.toFloat(_v12.x)]
-                           ,["dir"
-                            ,_U.cmp(_v12.x,
-                            0) < 0 ? "left" : _U.cmp(_v12.x,
-                            0) > 0 ? "right" : m.dir]],
-         m);
-      }();
-   });
-   var jumpSpeed = 8;
-   var jump = F2(function (_v14,
-   m) {
-      return function () {
-         return _U.cmp(_v14.y,
-         0) > 0 && _U.eq(m.y,
-         0) ? _U.replace([["vy"
-                          ,jumpSpeed]],
-         m) : m;
-      }();
-   });
-   var step = function (_v16) {
-      return function () {
-         switch (_v16.ctor)
+         switch (_v27.ctor)
          {case "_Tuple2":
-            return function ($) {
-                 return physics(_v16._0)(walk(_v16._1)(gravity(_v16._0)(jump(_v16._1)($))));
-              };}
+            return function () {
+                 switch (_v26.ctor)
+                 {case "_Tuple2":
+                    return {ctor: "_Tuple2"
+                           ,_0: _v26._0 - _v27._0
+                           ,_1: _v26._1 - _v27._1};}
+                 _U.badCase($moduleName,
+                 "on line 11, column 24 to 36");
+              }();}
          _U.badCase($moduleName,
-         "on line 29, column 5 to 55");
+         "on line 11, column 24 to 36");
       }();
-   };
-   var player = {_: {}
-                ,dir: "right"
-                ,vx: 0
-                ,vy: 0
-                ,x: 0
-                ,y: 0};
-   var main = A3($Signal.map2,
+   });
+   var g_con = 6.67384e-11;
+   var gravity = F2(function (o1,
+   o2) {
+      return function () {
+         var m2 = o2.m;
+         var m1 = o1.m;
+         var p2 = o2.pos;
+         var p1 = o1.pos;
+         var r = A2(sub,p2,p1);
+         return A2(scale,
+         (0 - g_con) * m1 * m2 / A2(dot,
+         r,
+         r) / m2,
+         norm(r));
+      }();
+   });
+   var step = F2(function (_v34,
+   _v35) {
+      return function () {
+         switch (_v35.ctor)
+         {case "::":
+            switch (_v35._1.ctor)
+              {case "::":
+                 switch (_v35._1._1.ctor)
+                   {case "[]": return function () {
+                           switch (_v34.ctor)
+                           {case "_Tuple2":
+                              return function () {
+                                   var acc = A2(gravity,
+                                   _v35._0,
+                                   _v35._1._0);
+                                   var vel = A2(add,
+                                   _v35._1._0.v,
+                                   A2(scale,_v34._0,acc));
+                                   var position = A2(add,
+                                   _v35._1._0.pos,
+                                   A2(scale,_v34._0,vel));
+                                   var newMe = _U.replace([["a"
+                                                           ,acc]
+                                                          ,["v",vel]
+                                                          ,["pos",position]],
+                                   _v35._1._0);
+                                   return _L.fromArray([_v35._0
+                                                       ,newMe]);
+                                }();}
+                           _U.badCase($moduleName,
+                           "between lines 34 and 40");
+                        }();}
+                   break;}
+              break;}
+         _U.badCase($moduleName,
+         "between lines 34 and 40");
+      }();
+   });
+   var ball = {_: {}
+              ,a: {ctor: "_Tuple2"
+                  ,_0: 0
+                  ,_1: 0}
+              ,m: 0.5
+              ,pos: {ctor: "_Tuple2"
+                    ,_0: 0
+                    ,_1: 10}
+              ,v: {ctor: "_Tuple2"
+                  ,_0: 0
+                  ,_1: 0}};
+   var earth = {_: {}
+               ,a: {ctor: "_Tuple2"
+                   ,_0: 0
+                   ,_1: 0}
+               ,m: 5.972e24
+               ,pos: {ctor: "_Tuple2"
+                     ,_0: 0
+                     ,_1: -6371000}
+               ,v: {ctor: "_Tuple2"
+                   ,_0: 0
+                   ,_1: 0}};
+   var main = A2($Signal.map,
    render,
-   $Window.dimensions,
    A3($Signal.foldp,
    step,
-   player,
+   _L.fromArray([earth,ball]),
    input));
    _elm.Main.values = {_op: _op
-                      ,player: player
-                      ,jumpSpeed: jumpSpeed
-                      ,moveSpeed: moveSpeed
-                      ,jump: jump
+                      ,earth: earth
+                      ,ball: ball
+                      ,g_con: g_con
+                      ,sub: sub
+                      ,add: add
+                      ,dot: dot
+                      ,scale: scale
+                      ,len: len
+                      ,norm: norm
                       ,gravity: gravity
-                      ,physics: physics
-                      ,walk: walk
-                      ,step: step
-                      ,fitIn: fitIn
-                      ,render: render
                       ,input: input
+                      ,step: step
+                      ,render: render
                       ,main: main};
    return _elm.Main.values;
 };
